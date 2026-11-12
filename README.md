@@ -32,7 +32,7 @@ git clone https://github.com/katelyncox/brightleaf-git-demo.git
 cd brightleaf-git-demo
 ```
 
-**R**
+**R** (requires R 4.6; the lockfile was built with R 4.6.1)
 
 ```r
 renv::restore()                 # install R packages from renv.lock

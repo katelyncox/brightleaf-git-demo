@@ -30,6 +30,7 @@ last place to first as the weather warms.** That's all you need to know.
 - [ ] Set `git config --global user.name/user.email`
 - [ ] Confirm that JupyterLab has `jupyterlab-git`, and that VS Code has Git Graph (or plan to install it live)
 - [ ] For Azure DevOps delegated credentials: confirm the server has Entra ID SSO and delegated permissions configured, and have an ADO repo ready
+- [ ] Make sure the Workbench session uses **R 4.6** (choose it in the New Session dialog or in RStudio under Tools > Global Options > General)
 - [ ] Run `renv::restore()` and `uv sync` once beforehand to warm up the package cache
 - [ ] Delete any old clones so the "clone" step is fresh
 
