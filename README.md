@@ -11,7 +11,7 @@ The analysis is intentionally simple, because the point is the **Git workflow**,
 ## Project structure
 
 ```
-BrightleafCoffee_CoffeeRetail/
+brightleaf-git-demo/
 ├── data/
 │   ├── generate_data.R        # Creates data/synthetic-coffee-sales.csv (R)
 │   └── generate_data.py       # Same data schema (Python)
@@ -28,8 +28,8 @@ BrightleafCoffee_CoffeeRetail/
 ## Setup
 
 ```bash
-git clone <this-repo-url>
-cd BrightleafCoffee_CoffeeRetail
+git clone https://github.com/katelyncox/brightleaf-git-demo.git
+cd brightleaf-git-demo
 ```
 
 **R**

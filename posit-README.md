@@ -23,7 +23,7 @@ last place to first as the weather warms.** That's all you need to know.
 
 ## Pre-demo checklist
 
-- [ ] Push this folder to its own GitHub repo (for example, `posit-demo/brightleaf-git-demo`)
+- [ ] Repo: https://github.com/katelyncox/brightleaf-git-demo (fork it, or push your own copy if you need write access during the demo)
 - [ ] Log in to a Workbench server where each IDE you plan to show is enabled
 - [ ] Add your SSH key or PAT in each session, or plan to do it live (see GIT-DEMO.md §0)
 - [ ] Set `git config --global user.name/user.email`
