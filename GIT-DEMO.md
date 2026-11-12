@@ -13,14 +13,42 @@ Pick the IDEs that matter to your audience. Each section takes about 3–5 minut
 
 Workbench sessions run on a **remote server**, not your laptop. That means credentials
 you have locally don't carry over, so you set them up **inside the Workbench session**.
-Workbench supports two methods:
+There are three common methods:
 
 | Method | Clone URL looks like | Best for |
 |---|---|---|
-| **SSH key** | `git@github.com:ORG/REPO.git` | Long-lived, no password prompts |
-| **HTTPS + Personal Access Token (PAT)** | `https://github.com/ORG/REPO.git` | Quick setup, works through most proxies |
+| **A. OAuth (browser sign-in)** | `https://github.com/ORG/REPO.git` | Fastest setup with no keys or tokens to copy (recommended for demos) |
+| **B. SSH key** | `git@github.com:ORG/REPO.git` | Long-lived, no password prompts |
+| **C. HTTPS + Personal Access Token (PAT)** | `https://github.com/ORG/REPO.git` | Works anywhere, including through most proxies |
 
-### Option A — SSH key (run in a Workbench terminal)
+### Option A — OAuth with the GitHub CLI (run in a Workbench terminal)
+
+Sign in through your browser using GitHub's **device flow**. This works well on a remote
+server, because you approve the sign-in on your laptop and the token is stored in the Workbench session.
+
+```bash
+gh auth login --hostname github.com --git-protocol https --web
+#  → copy the one-time code, open https://github.com/login/device on your laptop,
+#    paste the code, and approve
+gh auth setup-git      # configures Git to use gh for credentials
+gh auth status         # confirm you're logged in
+```
+
+That's it. Clone with the HTTPS URL, and push and pull work from **every** IDE (RStudio's Git pane,
+Positron, VS Code, JupyterLab), because they all use the same `git`.
+
+**Notes**
+- `gh` must be installed on the Workbench server. If it isn't, ask your admin, or put the
+  [release binary](https://github.com/cli/cli/releases) in `~/bin`.
+- **Other providers:** [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager)
+  (installed by an admin) supports the OAuth device flow for GitHub, GitLab, Bitbucket, and Azure DevOps.
+  On a headless server, set a credential store, for example `git config --global credential.credentialStore cache`.
+- The token is saved in `~/.config/gh/hosts.yml`. On ephemeral storage, run `gh auth login` again in each
+  new session. It takes about 20 seconds.
+- In a browser-based Workbench session, the **"Sign in with GitHub"** button in VS Code or Positron may not work,
+  because the OAuth redirect has to return to the server. Use the terminal flow above.
+
+### Option B — SSH key (run in a Workbench terminal)
 
 ```bash
 ssh-keygen -t ed25519 -C "you@example.com"   # press Enter to accept defaults
@@ -30,7 +58,7 @@ ssh -T git@github.com                        # test after adding the key to your
 
 RStudio Pro users can also go to **Tools > Global Options > Git/SVN > Create SSH Key**.
 
-### Option B — HTTPS + PAT
+### Option C — HTTPS + PAT
 
 1. Create a PAT with your provider (for GitHub, a fine-grained token with *Contents: Read and write* on this repo).
 2. Clone with the HTTPS URL. When Git prompts for a password, paste the **PAT**.
@@ -177,6 +205,7 @@ Show collaboration across IDEs:
 | Symptom | Fix |
 |---|---|
 | `Permission denied (publickey)` | Add the **public** key to your provider; run `ssh -T git@github.com` |
+| Git still prompts after `gh auth login` | Run `gh auth setup-git`; make sure the remote URL is `https://`, not `git@` |
 | HTTPS asks for a password repeatedly | Use a **PAT**, not your account password; set a `credential.helper` |
 | `Author identity unknown` | Set `git config --global user.name/user.email` |
 | RStudio Git pane missing | Open the `.Rproj` file; check **Tools > Global Options > Git/SVN** for the Git path |

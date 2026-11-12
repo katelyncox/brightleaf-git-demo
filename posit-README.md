@@ -25,7 +25,8 @@ last place to first as the weather warms.** That's all you need to know.
 
 - [ ] Repo: https://github.com/katelyncox/brightleaf-git-demo (fork it, or push your own copy if you need write access during the demo)
 - [ ] Log in to a Workbench server where each IDE you plan to show is enabled
-- [ ] Add your SSH key or PAT in each session, or plan to do it live (see GIT-DEMO.md §0)
+- [ ] Confirm `gh` (GitHub CLI) is installed on the Workbench server for the OAuth sign-in (`gh --version`)
+- [ ] Sign in with `gh auth login` / `gh auth setup-git` (or add an SSH key or PAT) in each session, or plan to do it live (see GIT-DEMO.md §0)
 - [ ] Set `git config --global user.name/user.email`
 - [ ] Confirm that JupyterLab has `jupyterlab-git`, and that VS Code has Git Graph (or plan to install it live)
 - [ ] For Azure DevOps delegated credentials: confirm the server has Entra ID SSO and delegated permissions configured, and have an ADO repo ready
@@ -36,8 +37,9 @@ last place to first as the weather warms.** That's all you need to know.
 
 1. **Frame it (1 min):** "Workbench sessions run on the server. Your code, credentials, and Git
    all live there, next to your data and compute, in whatever IDE you like."
-2. **Credentials (3 min):** Show SSH key generation in a terminal, or a PAT clone. Mention
-   the `credential.helper` tip for ephemeral storage, and that the file is already in `.gitignore`.
+2. **Credentials (3 min):** Lead with **OAuth**: run `gh auth login --web` in a Workbench terminal,
+   approve the device code on your laptop, then run `gh auth setup-git`. There are no keys or tokens to copy.
+   Briefly mention SSH keys and PATs as alternatives, plus the `credential.helper` tip for ephemeral storage.
 3. **RStudio Pro (4 min):** New Project from Git → edit `eda.qmd` → Render → Git pane →
    stage, commit, and push. Point out that the CSV and HTML aren't tracked.
 4. **Positron Pro (3 min):** Command Palette → *Workspaces: New Folder from Git* → edit →
@@ -62,7 +64,8 @@ last place to first as the weather warms.** That's all you need to know.
 ## Troubleshooting
 
 See the table at the bottom of [GIT-DEMO.md](GIT-DEMO.md). The most common live failures:
-- **Wrong URL type:** an SSH key won't help with an `https://` URL, and a PAT won't help with `git@...`.
+- **Wrong URL type:** OAuth and PATs need the `https://` URL; SSH keys need `git@...`.
+- **OAuth sign-in succeeded but Git still prompts:** run `gh auth setup-git`.
 - **Missing Git pane in RStudio:** the user didn't open the `.Rproj` file.
 - **Data missing:** run `Rscript data/generate_data.R` (the docs also generate it automatically).
 
