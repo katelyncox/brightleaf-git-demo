@@ -1,0 +1,40 @@
+# Brand configuration for Brightleaf Coffee Co. (a fictional, AI-generated company)
+# Used automatically by Quarto (eda.qmd). Edit the colors here and re-render
+# to see branding change everywhere — a nice "small commit" for the Git demo!
+meta:
+  name:
+    short: Brightleaf
+    full: Brightleaf Coffee Co.
+
+color:
+  palette:
+    espresso: "#3B2A20"
+    green: "#4F7942"
+    cream: "#FBF7F0"
+    orange: "#D9822B"
+    teal: "#2F7F7A"
+    red: "#B5443A"
+  foreground: espresso
+  background: cream
+  primary: green
+  secondary: "#6B5B4E"
+  success: green
+  info: teal
+  warning: orange
+  danger: red
+
+typography:
+  fonts:
+    - family: Lato
+      source: google
+    - family: Merriweather
+      source: google
+      weight: [700]
+    - family: Fira Code
+      source: google
+  base: Lato
+  headings:
+    family: Merriweather
+    weight: 700
+    color: espresso
+  monospace: Fira Code

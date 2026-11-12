@@ -1,0 +1,75 @@
+---
+title: "Brightleaf Coffee Co. — Sales Snapshot"
+subtitle: "A tiny R analysis for demonstrating Git in Posit Workbench"
+format:
+  html:
+    toc: true
+    embed-resources: true
+execute:
+  warning: false
+  message: false
+---
+
+::: {.callout-important}
+This project contains synthetic data and analysis created for demonstration purposes only.
+:::
+
+## Load the data
+
+```{r}
+#| label: setup
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(gt)
+
+data_file <- "data/synthetic-coffee-sales.csv"
+
+# Synthetic data is not committed to Git (see .gitignore) — generate it if missing
+if (!file.exists(data_file)) {
+  source("data/generate_data.R")
+}
+
+sales <- read_csv(data_file, comment = "#")
+```
+
+## Revenue by store
+
+```{r}
+#| label: store-table
+sales |>
+  group_by(store) |>
+  summarise(cups = sum(cups_sold), revenue = sum(revenue)) |>
+  arrange(desc(revenue)) |>
+  gt() |>
+  fmt_number(cups, decimals = 0) |>
+  fmt_currency(revenue, decimals = 0) |>
+  cols_label(store = "Store", cups = "Cups Sold", revenue = "Revenue")
+```
+
+## Monthly cups sold by drink
+
+```{r}
+#| label: monthly-trend
+#| fig-height: 4
+monthly <- sales |>
+  mutate(month = lubridate::floor_date(date, "month")) |>
+  group_by(month, drink) |>
+  summarise(cups = sum(cups_sold), .groups = "drop")
+
+ggplot(monthly, aes(month, cups, color = drink)) +
+  geom_line(linewidth = 1.1) +
+  geom_point() +
+  labs(x = NULL, y = "Cups sold", color = "Drink",
+       title = "Cold Brew climbs as the weather warms") +
+  theme_minimal(base_size = 13)
+```
+
+## Key takeaway
+
+Cold Brew starts the year as the slowest seller and finishes as the top drink by June.
+
+<!--
+GIT DEMO TIP: Make a small, visible edit here (e.g., change the takeaway text
+or the plot title above), then stage, commit, and push it from the IDE.
+-->

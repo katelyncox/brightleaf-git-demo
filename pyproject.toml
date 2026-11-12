@@ -1,0 +1,14 @@
+[project]
+name = "brightleaf-coffee-git-demo"
+version = "0.1.0"
+description = "Simple synthetic-data demo for Git integration in Posit Workbench"
+requires-python = ">=3.11"
+dependencies = [
+    "ipykernel>=7.4.0",
+    "jupyterlab>=4.6.6",
+    "jupyterlab-git>=0.55.0",
+    "matplotlib>=3.11.2",
+    "nbconvert>=7.17.2",
+    "numpy>=2.4.6",
+    "polars>=2.1.0",
+]

@@ -1,0 +1,38 @@
+# R Environment
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+
+# Python Environment (if applicable)
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# Quarto
+.quarto/
+/_site/
+*.html
+eda_files/
+
+# Shiny
+rsconnect/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Data files - avoid tracking synthetic data
+data/*.csv
+
+# Credentials - NEVER commit these (see GIT-DEMO.md)
+.my-credentials
+.git-credentials
+
+# Claude Code
+.claude/settings.local.json
