@@ -63,23 +63,26 @@ RStudio Pro users can also go to **Tools > Global Options > Git/SVN > Create SSH
 1. Create a PAT with your provider (for GitHub, a fine-grained token with *Contents: Read and write* on this repo).
 2. Clone with the HTTPS URL. When Git prompts for a password, paste the **PAT**.
 
-### Where to add keys and tokens
+### Provider links: OAuth, SSH keys, and tokens
 
-| Provider | SSH Keys | PAT |
-|---|---|---|
-| GitHub | [Add SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) | [Manage PATs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) |
-| GitLab | [Add SSH key](https://docs.gitlab.com/user/ssh/) | [Create PAT](https://docs.gitlab.com/user/profile/personal_access_tokens/) |
-| Bitbucket | [Set up SSH keys](https://support.atlassian.com/bitbucket-cloud/docs/set-up-personal-ssh-keys-on-linux/) | [Create app password](https://support.atlassian.com/bitbucket-cloud/docs/create-an-app-password/) |
-| Azure DevOps | [SSH auth](https://learn.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate) | [Use PATs](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate) |
+| Provider | OAuth (Option A) | SSH Keys (Option B) | PAT (Option C) |
+|---|---|---|---|
+| GitHub | [GitHub CLI `gh auth login`](https://cli.github.com/manual/gh_auth_login) | [Add SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) | [Manage PATs](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) |
+| GitLab | [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/gitlab.md) | [Add SSH key](https://docs.gitlab.com/user/ssh/) | [Create PAT](https://docs.gitlab.com/user/profile/personal_access_tokens/) |
+| Bitbucket | [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager) | [Set up SSH keys](https://support.atlassian.com/bitbucket-cloud/docs/set-up-personal-ssh-keys-on-linux/) | [Create app password](https://support.atlassian.com/bitbucket-cloud/docs/create-an-app-password/) |
+| Azure DevOps | [Delegated credentials](#azure-devops-delegated-credentials-rstudio-pro-only) (RStudio Pro) or [Git Credential Manager](https://github.com/git-ecosystem/git-credential-manager/blob/main/docs/azrepos-users-and-tokens.md) | [SSH auth](https://learn.microsoft.com/en-us/azure/devops/repos/git/use-ssh-keys-to-authenticate) | [Use PATs](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate) |
 
-### Tip: persist credentials on ephemeral storage
+### Tip: persist a PAT on ephemeral storage (Option C only)
 
-If your sessions use ephemeral storage (for example, Kubernetes or Slurm), persist HTTPS credentials with:
+If you use a **PAT** and your sessions use ephemeral storage (for example, Kubernetes or Slurm), persist it with:
 
 ```bash
 git config --global credential.helper 'store --file ~/.my-credentials'
 ```
 
+> Skip this if you used **OAuth (Option A)**, because `gh auth setup-git` already configures Git's credential helper
+> for GitHub. Adding a second helper can cause unexpected prompts.
+>
 > ⚠️ This stores the token in **plain text** in your home directory. Never commit that file;
 > it's already listed in this repo's `.gitignore`.
 
@@ -206,7 +209,7 @@ Show collaboration across IDEs:
 |---|---|
 | `Permission denied (publickey)` | Add the **public** key to your provider; run `ssh -T git@github.com` |
 | Git still prompts after `gh auth login` | Run `gh auth setup-git`; make sure the remote URL is `https://`, not `git@` |
-| HTTPS asks for a password repeatedly | Use a **PAT**, not your account password; set a `credential.helper` |
+| HTTPS asks for a password repeatedly | Use OAuth (`gh auth login` + `gh auth setup-git`), or paste a **PAT** rather than your account password and set a `credential.helper` |
 | `Author identity unknown` | Set `git config --global user.name/user.email` |
 | RStudio Git pane missing | Open the `.Rproj` file; check **Tools > Global Options > Git/SVN** for the Git path |
 | Push rejected (`non-fast-forward`) | **Pull** first, then push again |
